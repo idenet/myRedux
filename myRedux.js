@@ -100,3 +100,24 @@ function bindActionCreator(actionCreators, dispatch) {
 
   return boundActionCreators
 }
+
+function combineReducers(reducers) {
+  // 检查renders必须是函数
+  let reducersKeys = Object.keys(rducers)
+  for (let i = 0; i < reducersKeys.length; i++) {
+    let key = reducersKeys[i]
+    if (typeof reducers[key] !== 'function')
+      throw new Error('reducer必须是函数')
+  }
+  // 2. 调用一个个小的reducer
+  return function (state, action) {
+    let nextState = {}
+    for (let i = 0; i < reducersKeys.length; i++) {
+      let key = reducersKeys[i]
+      let reducer = reducers[key]
+      let previousStateForKey = state[key]
+      nextState[key] = reducer(previousStateForKey, action)
+    }
+    return nextState
+  }
+}

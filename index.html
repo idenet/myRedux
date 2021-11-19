@@ -46,7 +46,9 @@
     }
 
 
-    let store = createStore(reducer, 0, applyMiddleWare(logger, thunk))
+    var rootReducer = combineReducers({ counter: reducer })
+
+    let store = createStore(rootReducer, { counter: 100 }, applyMiddleWare(logger, thunk))
 
     store.subscribe(function () {
       document.getElementById('box').innerHTML = store.getState()
